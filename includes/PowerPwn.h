@@ -17,6 +17,7 @@ void new_line(void);
 void green(void);
 void red(void);
 void help(void);
+void seperator(void);
 int options(void);
 void main_loop(void);
 void create_connection(char ip[CMDLINE_BUFFER]);
