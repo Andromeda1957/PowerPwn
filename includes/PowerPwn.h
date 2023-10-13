@@ -13,6 +13,7 @@ struct commands {
 uint8_t sd(void);
 void green(void);
 void red(void);
+void help(void);
 int options(void);
 void main_loop(void);
 void create_connection(char ip[CMDLINE_BUFFER]);
