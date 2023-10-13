@@ -11,6 +11,8 @@ struct commands {
 };
 
 uint8_t sd(void);
+void get_input(char input[BUFFER]);
+void new_line(void);
 void green(void);
 void red(void);
 void help(void);
