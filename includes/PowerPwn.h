@@ -8,6 +8,7 @@ const uint16_t BUFFER = 1024;
 
 struct commands {
     std::string exit;
+    std::string help;
 };
 
 uint8_t sd(void);
