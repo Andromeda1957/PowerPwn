@@ -49,11 +49,11 @@ int options(void) {
 }
 
 void main_loop(void) {
-    std::string linpwn = "(PowerPwn) > ";
+    std::string powerpwn = "(PowerPwn) > ";
 
     do {
         red();
-        write(sd(), linpwn.data(), linpwn.length());
+        write(sd(), powerpwn.data(), powerpwn.length());
         green();
     } while (options() != 1);
 }
