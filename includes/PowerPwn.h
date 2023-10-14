@@ -7,6 +7,7 @@ const uint8_t CMDLINE_BUFFER = 32;
 const uint16_t BUFFER = 1024;
 
 struct commands {
+    std::string shell;
     std::string exit;
     std::string help;
 };
