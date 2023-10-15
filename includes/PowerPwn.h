@@ -33,7 +33,7 @@ class Connection {
 };
 
 void get_input(char input[BUFFER]);
-int options(void);
+int options(char *option, struct commands *cmd);
 void main_loop(void);
 
 #endif
