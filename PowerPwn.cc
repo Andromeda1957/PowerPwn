@@ -136,15 +136,15 @@ void Connection::create_connection(char ip[CMDLINE_BUFFER]) {
 }
 
 int main(int argc, char **argv) {
-    //struct sigaction sa;
+    struct sigaction sa;
 
     if (argc < 1)
         return 1;
 
-    /*memset(&sa, '\0', sizeof(sa));
+    memset(&sa, '\0', sizeof(sa));
     sa.sa_sigaction = (void (*)(int, siginfo_t *, void *))&exit;
     sa.sa_flags = SA_SIGINFO;
-    sigaction(SIGSEGV, &sa, NULL);*/
+    sigaction(SIGSEGV, &sa, NULL);
     Connection::create_connection(argv[1]);
     main_loop();
 
