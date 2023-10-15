@@ -1,4 +1,6 @@
 #include <cstdint>
+#include <sys/utsname.h>
+
 
 #ifndef PowerPwn
 #define PowerPwn
@@ -8,6 +10,7 @@ const uint16_t BUFFER = 1024;
 
 struct commands {
     std::string shell;
+    std::string sysinfo;
     std::string exit;
     std::string help;
 };
@@ -15,6 +18,7 @@ struct commands {
 class Formatting {
   public:
     static void new_line(void);
+    static void space(void);
     static void green(void);
     static void red(void);
     static void seperator(void);
@@ -24,6 +28,7 @@ class Modules {
   public:
     static void help(void);
     static void shell(void);
+    static void sysinfo(void);
 };
 
 class Connection {
