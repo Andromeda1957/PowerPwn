@@ -10,7 +10,6 @@
 #include <sys/types.h>
 #include <sys/utsname.h>
 
-
 #include <string>
 
 #include "includes/PowerPwn.h"
@@ -27,6 +26,11 @@ void get_input(char input[BUFFER]) {
 void Formatting::new_line(void) {
     std::string newline = "\n";
     write(Connection::sd(), newline.data(), newline.length());
+}
+
+void Formatting::space(void) {
+    std::string space = " ";
+    write(Connection::sd(), space.data(), space.length());
 }
 
 void Formatting::green(void) {
@@ -49,16 +53,18 @@ void Modules::help(void) {
     struct commands cmd;
     std::string cmds_list = "Commands\n";
     cmd.shell = "shell\n";
+    cmd.sysinfo = "sysinfo\n";
     cmd.exit = "exit\n";
     cmd.help = "help\n";
 
-    Formatting::new_line();
     Formatting::green();
     write(Connection::sd(), cmds_list.data(), cmds_list.length());
     Formatting::seperator();
     write(Connection::sd(), cmd.shell.data(), cmd.shell.length());
+    write(Connection::sd(), cmd.sysinfo.data(), cmd.sysinfo.length());
     write(Connection::sd(), cmd.exit.data(), cmd.exit.length());
     write(Connection::sd(), cmd.help.data(), cmd.help.length());
+    Formatting::seperator();
 
 }
 
@@ -86,10 +92,53 @@ void Modules::shell(void) {
     }
 }
 
+void Modules::sysinfo(void) {
+    struct utsname utsinfo;
+    uname(&utsinfo);
+
+    std::string sysname = utsinfo.sysname;
+    std::string nodename = utsinfo.nodename;
+    std::string release = utsinfo.release;
+    std::string version = utsinfo.version;
+    std::string machine = utsinfo.machine;
+    std::string domainname = utsinfo.domainname;
+    std::string systems = "OS: ";
+    std::string hostname = "Hostname: ";
+    std::string build = "Build: ";
+    std::string date = "Date: ";
+    std::string arch= "Arch: ";
+    std::string domain_name = "Domain Name: ";
+    std::string ip = "IP: ";
+
+    Formatting::seperator();
+    write(Connection::sd(), systems.data(), systems.length());
+    write(Connection::sd(), sysname.data(), sysname.length());
+    Formatting::new_line();
+    write(Connection::sd(), hostname.data(), hostname.length());
+    write(Connection::sd(), nodename.data(), nodename.length());
+    Formatting::new_line();
+    write(Connection::sd(), build.data(), build.length());
+    write(Connection::sd(), release.data(), release.length());
+    Formatting::new_line();
+    write(Connection::sd(), date.data(), date.length());
+    write(Connection::sd(), version.data(), version.length());
+    Formatting::new_line();
+    write(Connection::sd(), arch.data(), arch.length());
+    write(Connection::sd(), machine.data(), machine.length());
+    Formatting::new_line();
+    write(Connection::sd(), domain_name.data(), domain_name.length());
+    write(Connection::sd(), domainname.data(), domainname.length());
+    Formatting::new_line();
+    write(Connection::sd(), ip.data(), ip.length());
+    system("hostname -I");
+    Formatting::seperator();
+}
+
 int options(char *option, struct commands *cmd) {
     get_input(option);
 
     cmd->shell = "shell";
+    cmd->sysinfo = "sysinfo";
     cmd->exit = "exit";
     cmd->help = "help";
 
@@ -99,6 +148,8 @@ int options(char *option, struct commands *cmd) {
         Modules::help();
     else if (option == cmd->shell)
         Modules::shell();
+    else if (option == cmd->sysinfo)
+        Modules::sysinfo();
 
     return 0;
 }
