@@ -12,15 +12,28 @@ struct commands {
     std::string help;
 };
 
-uint8_t sd(void);
+class Formatting {
+  public:
+    static void new_line(void);
+    static void green(void);
+    static void red(void);
+    static void seperator(void);
+};
+
+class Modules {
+  public:
+    static void help(void);
+    static void shell(void);
+};
+
+class Connection {
+  public:
+    static uint8_t sd(void);
+    static void create_connection(char ip[CMDLINE_BUFFER]);
+};
+
 void get_input(char input[BUFFER]);
-void new_line(void);
-void green(void);
-void red(void);
-void help(void);
-void seperator(void);
 int options(void);
 void main_loop(void);
-void create_connection(char ip[CMDLINE_BUFFER]);
 
 #endif
